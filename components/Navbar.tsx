@@ -58,7 +58,7 @@ export default function Navbar() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{user.name || "Usuario"}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push("/perfil")}>
+              <DropdownMenuItem onClick={() => router.push("/profile")}>
                 Perfil
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleLogout}>

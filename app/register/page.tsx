@@ -36,10 +36,13 @@ export default function RegisterPage() {
       } else {
         router.push("/provider/services");
       }
+      
     } else {
       alert(data.error || "Error al registrarse");
+      
     }
   };
+
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
