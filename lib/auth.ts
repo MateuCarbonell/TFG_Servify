@@ -1,6 +1,16 @@
+import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
-import { jwtVerify } from "jose";
 
+// Verifica el token
+export async function verifyToken(token: string) {
+  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+  const { payload } = await jwtVerify(token, secret);
+
+  return payload as { id: string; role: string; name?: string; email?: string };
+}
+
+// Obtener usuario de la cookie (esto ya lo tenías)
 export async function getUserFromCookie() {
   const cookieStore = cookies();
   const token = (await cookieStore).get("token")?.value;
@@ -8,12 +18,9 @@ export async function getUserFromCookie() {
   if (!token) return null;
 
   try {
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload } = await jwtVerify(token, secret);
-
-    return payload as { id: string; role: string; name?: string };
+    const user = await verifyToken(token);
+    return user;
   } catch (error) {
-    console.error("Error verifying token", error);
     return null;
   }
 }

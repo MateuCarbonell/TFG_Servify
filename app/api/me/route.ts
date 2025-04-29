@@ -1,30 +1,21 @@
 import { NextResponse } from "next/server";
-import { jwtVerify } from "jose";
-import prisma from "@/lib/prisma";
+import { cookies } from "next/headers";
+import { verifyToken } from "@/lib/auth"; // Asegúrate de tener tu verificador de JWT
 
 export async function GET() {
   try {
-    const token = globalThis?.__NEXT_PRIVATE_PREVIEW_TOKEN__ || (await import("next/headers")).cookies().get("token")?.value;
+    const cookieStore = cookies();
+    const token = (await cookieStore).get("token")?.value;
 
     if (!token) {
       return NextResponse.json({ user: null });
     }
 
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload } = await jwtVerify(token, secret);
-
-    const user = await prisma.user.findUnique({
-      where: { id: payload.id as string },
-      select: { id: true, name: true, role: true },
-    });
-
-    if (!user) {
-      return NextResponse.json({ user: null });
-    }
+    const user = await verifyToken(token);
 
     return NextResponse.json({ user });
   } catch (error) {
-    console.error(error);
+    console.error("Error obteniendo el usuario:", error);
     return NextResponse.json({ user: null });
   }
 }
