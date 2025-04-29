@@ -10,9 +10,20 @@ async function fetchServicios() {
   const res = await fetch("/api/servicios");
   return res.json();
 }
-
+type Servicio = {
+    id: string;
+    title: string;
+    description: string;
+    price: number;
+    location: string;
+    type: string;
+    provider?: {
+      name: string;
+    };
+  };
+  
 export default function BuscarPage() {
-  const [servicios, setServicios] = useState<any[]>([]);
+  const [servicios, setServicios] = useState<Servicio[]>([]);
   const [filtroTitulo, setFiltroTitulo] = useState("");
   const [precioMin, setPrecioMin] = useState("");
   const [precioMax, setPrecioMax] = useState("");
