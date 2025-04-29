@@ -1,4 +1,4 @@
-import { jwtVerify, SignJWT } from "jose";
+import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
 // Verifica el token
@@ -20,7 +20,7 @@ export async function getUserFromCookie() {
   try {
     const user = await verifyToken(token);
     return user;
-  } catch (error) {
+  } catch  {
     return null;
   }
 }
