@@ -1,0 +1,64 @@
+// Proveedor de base de datos (PostgreSQL recomendado)
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Cliente de Prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+// MODELOS
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+  services  Service[] @relation("UserServices")
+  reservations Reservation[] @relation("UserReservations")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  price       Float
+  location    String
+  type        String
+  availability Json
+  provider    User     @relation("UserServices", fields: [providerId], references: [id])
+  providerId  String
+  reservations Reservation[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Reservation {
+  id          String   @id @default(cuid())
+  service     Service  @relation(fields: [serviceId], references: [id])
+  serviceId   String
+  client      User     @relation("UserReservations", fields: [clientId], references: [id])
+  clientId    String
+  reservationDate DateTime
+  status      ReservationStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ENUMS
+
+enum Role {
+  CLIENTE
+  PROVEEDOR
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
