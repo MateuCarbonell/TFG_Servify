@@ -24,7 +24,7 @@ Aplicación web de reservas de servicios locales, desarrollada con Next.js 15, P
 🔗 https://tfg-servify.vercel.app
 
 ## 📦 Estructura del proyecto
-
+![Modelo ER](./assets/Untitled.pdf)
 ...
 
 ## 🛠️ Instalación
@@ -42,7 +42,7 @@ npm run dev
 
 ## 📘 2. Modelo Entidad-Relación (ER)
 ---
-![Modelo ER](./assets/Untitled.pdf)
+
 
 ### 📐 Entidades y relaciones:
 
