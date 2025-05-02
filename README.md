@@ -42,7 +42,7 @@ npm run dev
 
 ## 📘 2. Modelo Entidad-Relación (ER)
 ---
-![Modelo ER](./assets/Untitled.png)
+![Modelo ER](./assets/Untitled.pdf)
 
 ### 📐 Entidades y relaciones:
 
