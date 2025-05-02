@@ -25,7 +25,7 @@ Aplicación web de reservas de servicios locales, desarrollada con Next.js 15, P
 
 ## 📦 Estructura del proyecto
 ![Modelo ER](./assets/Untitled.pdf)
-...
+
 
 ## 🛠️ Instalación
 
