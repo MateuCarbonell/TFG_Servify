@@ -3,7 +3,14 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Navbar() {
@@ -16,7 +23,7 @@ export default function Navbar() {
         const res = await fetch("/api/me");
         if (res.ok) {
           const data = await res.json();
-          setUser(data.user);
+          setUser(data.user); // 👈 Guardamos user con su rol
         }
       } catch (error) {
         console.error("No se pudo obtener el usuario", error);
@@ -28,8 +35,8 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST" });
-    setUser(null); // 👈 Muy importante: limpiar el usuario en React
-    router.push("/login");
+    setUser(null); // 👈 Limpiar usuario
+    router.push("/"); // 👈 Volver al landing
     router.refresh();
   };
 
@@ -38,14 +45,24 @@ export default function Navbar() {
       <div className="text-xl font-bold">Mi Proyecto</div>
 
       <div className="flex items-center gap-4">
-        <Button variant="outline" onClick={() => router.push("/dashboard")}>
-          Dashboard
-        </Button>
+
+        {/* Mostrar solo si está logueado */}
+        {user?.role === "CLIENTE" && (
+          <Button variant="outline" onClick={() => router.push("/buscar")}>
+            Buscar Servicios
+          </Button>
+        )}
+
+        {user?.role === "PROVEEDOR" && (
+          <Button variant="outline" onClick={() => router.push("/provider/services")}>
+            Gestionar Servicios
+          </Button>
+        )}
 
         <Button variant="default" onClick={() => router.push("/settings")}>
           Settings
         </Button>
-
+          {/* ShadCN */}
         {user && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -61,10 +78,12 @@ export default function Navbar() {
               <DropdownMenuItem onClick={() => router.push("/profile")}>
                 Perfil
               </DropdownMenuItem>
+              
               <DropdownMenuItem onClick={handleLogout}>
                 Cerrar sesión
               </DropdownMenuItem>
             </DropdownMenuContent>
+
           </DropdownMenu>
         )}
       </div>
