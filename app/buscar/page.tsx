@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 async function fetchServicios() {
-  const res = await fetch("/api/servicios");
+  const res = await fetch("/api/services");
   return res.json();
 }
 type Servicio = {
