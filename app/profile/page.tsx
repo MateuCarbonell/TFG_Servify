@@ -5,9 +5,14 @@ import { redirect } from "next/navigation";
 export default async function PerfilPage() {
   const user = await getUserFromCookie();
 
-  if (!user || user.role !== "CLIENTE") {
+  if (!user) {
     redirect("/login");
   }
+  
+  if (user.role === "PROVEEDOR") {
+    redirect("/provider/reservation");
+  }
+  
 
   const reservas = await prisma.reservation.findMany({
     where: { clientId: user.id },
