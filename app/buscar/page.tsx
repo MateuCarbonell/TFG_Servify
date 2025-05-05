@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ReservarServicio } from "@/components/ReservarServicio";
+
 
 async function fetchServicios() {
   const res = await fetch("/api/services");
@@ -46,6 +48,7 @@ export default function BuscarPage() {
     const tipoCoincide = !tipoSeleccionado || servicio.type === tipoSeleccionado;
     return tituloCoincide && precioCoincide && tipoCoincide;
   });
+
 
   return (
     <div className="p-8">
@@ -109,9 +112,10 @@ export default function BuscarPage() {
               </p>
 
               {/* Aquí viene el botón de Reservar */}
-              <Button className="mt-4 w-full" variant="default">
-                Reservar
-              </Button>
+              <ReservarServicio servicio={servicio} />
+
+
+
             </CardContent>
           </Card>
         ))}
