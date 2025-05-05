@@ -28,5 +28,5 @@ export async function POST(
     data: { status: status as ReservationStatus }, 
   });
 
-  return NextResponse.redirect(new URL("/provider/reservas", request.url));
+  return NextResponse.redirect(new URL("/provider/reservation", request.url));
 }
