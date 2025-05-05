@@ -4,7 +4,7 @@ import { getUserFromCookie } from "@/lib/auth";
 
 export async function PATCH(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Record<string, string> }
 ) {
   const user = await getUserFromCookie();
 
@@ -13,7 +13,7 @@ export async function PATCH(
   }
 
   const { status } = await req.json();
-  const id = context.params.id;
+  const id = params.id;
 
   if (!["PENDING", "CONFIRMED", "CANCELLED"].includes(status)) {
     return NextResponse.json({ error: "Estado no válido" }, { status: 400 });
