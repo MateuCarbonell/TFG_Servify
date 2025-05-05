@@ -1,32 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { ReservationStatus } from "@prisma/client";
-
 import { getUserFromCookie } from "@/lib/auth";
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+export async function PATCH(
+  req: NextRequest,
+  context: { params: { id: string } }
 ) {
   const user = await getUserFromCookie();
-  const formData = await request.formData();
-  const status = formData.get("status");
 
   if (!user || user.role !== "PROVEEDOR") {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
-  if (
-    !status ||
-    !["PENDING", "CONFIRMED", "CANCELLED"].includes(String(status))
-  ) {
-    return NextResponse.json({ error: "Estado inválido" }, { status: 400 });
+  const { status } = await req.json();
+  const id = context.params.id;
+
+  if (!["PENDING", "CONFIRMED", "CANCELLED"].includes(status)) {
+    return NextResponse.json({ error: "Estado no válido" }, { status: 400 });
   }
 
-  await prisma.reservation.update({
-    where: { id: params.id },
-    data: { status: status as ReservationStatus }, 
+  const reserva = await prisma.reservation.update({
+    where: { id },
+    data: { status },
   });
 
-  return NextResponse.redirect(new URL("/provider/reservation", request.url));
+  return NextResponse.json({ reserva });
 }
