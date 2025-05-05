@@ -1,26 +1,58 @@
 import { getUserFromCookie } from "@/lib/auth";
+import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export default async function PerfilPage() {
   const user = await getUserFromCookie();
 
-  if (!user) {
+  if (!user || user.role !== "CLIENTE") {
     redirect("/login");
   }
 
-  return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Mi Perfil</h1>
+  const reservas = await prisma.reservation.findMany({
+    where: { clientId: user.id },
+    include: {
+      service: {
+        select: {
+          title: true,
+          location: true,
+          provider: {
+            select: { name: true }
+          }
+        }
+      }
+    },
+    orderBy: {
+      reservationDate: "desc"
+    }
+  });
 
-      <div className="space-y-4">
-        <div>
-          <strong>ID:</strong> {user.id}
-        </div>
-        <div>
-          <strong>Rol:</strong> {user.role}
-        </div>
-        {/* Podrías añadir más datos si tienes nombre, email, etc. */}
-      </div>
+  return (
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">Mis reservas</h1>
+
+      {reservas.length === 0 ? (
+        <p className="text-muted-foreground">No tienes reservas todavía.</p>
+      ) : (
+        <ul className="space-y-4">
+          {reservas.map((reserva) => (
+            <li key={reserva.id} className="border p-4 rounded-lg shadow">
+              <h2 className="font-semibold">{reserva.service.title}</h2>
+              <p className="text-sm text-gray-500">
+                Fecha: {new Date(reserva.reservationDate).toLocaleString()}
+              </p>
+              <p className="text-sm">Ubicación: {reserva.service.location}</p>
+              <p className="text-sm">Proveedor: {reserva.service.provider.name}</p>
+              <p className="text-sm">
+                Estado:{" "}
+                <span className="font-semibold text-blue-600">
+                  {reserva.status}
+                </span>
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
