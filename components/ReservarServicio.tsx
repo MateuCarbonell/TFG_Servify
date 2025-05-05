@@ -11,8 +11,20 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+ // Cualquier objeto que se llame servicio debe tener estas propiedades
+type Servicio = {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  location: string;
+  type: string;
+  provider?: {
+    name: string;
+  };
+};
 
-export function ReservarServicio({ servicio }: { servicio: any }) {
+export function ReservarServicio({ servicio }: { servicio: Servicio }) {
   const [open, setOpen] = useState(false);
   const [fecha, setFecha] = useState("");
   const [horas, setHoras] = useState<string[]>([]);
