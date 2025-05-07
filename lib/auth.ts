@@ -10,7 +10,7 @@ export async function verifyToken(token: string) {
   return payload as { id: string; role: string; name?: string; email?: string };
 }
 
-// Obtener usuario de la cookie (esto ya lo tenías)
+// Obtener usuario de la cookie 
 export async function getUserFromCookie() {
   const cookieStore = cookies();
   const token = (await cookieStore).get("token")?.value;
