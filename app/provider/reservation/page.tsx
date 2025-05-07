@@ -1,6 +1,7 @@
 import { getUserFromCookie } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import { AccionesReserva } from "@/components/AccionesReserva"; // 👈 Import aquí
 
 export default async function ReservasProveedorPage() {
   const user = await getUserFromCookie();
@@ -9,7 +10,6 @@ export default async function ReservasProveedorPage() {
     redirect("/login");
   }
 
-  // Buscar todas las reservas hechas a servicios de este proveedor
   const reservas = await prisma.reservation.findMany({
     where: {
       service: {
@@ -17,12 +17,8 @@ export default async function ReservasProveedorPage() {
       },
     },
     include: {
-      client: {
-        select: { name: true },
-      },
-      service: {
-        select: { title: true },
-      },
+      client: { select: { name: true } },
+      service: { select: { title: true } },
     },
     orderBy: {
       reservationDate: "desc",
@@ -52,6 +48,10 @@ export default async function ReservasProveedorPage() {
                   {reserva.status}
                 </span>
               </p>
+
+              {reserva.status === "PENDING" && (
+                <AccionesReserva id={reserva.id} />
+              )}
             </li>
           ))}
         </ul>
