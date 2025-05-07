@@ -68,8 +68,10 @@ export default function Navbar() {
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer">
                 <AvatarImage src="" alt="Avatar" />
+                {/* pillo la primera letra del user.name para la foto de perfil, en caso contrario se pone U*/}
                 <AvatarFallback>{user.name?.charAt(0) ?? "U"}</AvatarFallback>
               </Avatar>
+              
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">

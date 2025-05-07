@@ -19,7 +19,7 @@ type Servicio = {
   price: number;
   location: string;
   type: string;
-  provider?: {
+  provider?: { // puede estar definida… o no estarlo.
     name: string;
   };
 };
@@ -29,7 +29,7 @@ export function ReservarServicio({ servicio }: { servicio: Servicio }) {
   const [fecha, setFecha] = useState("");
   const [horas, setHoras] = useState<string[]>([]);
   const [horaSeleccionada, setHoraSeleccionada] = useState("");
-
+  
   const cargarHoras = async (nuevaFecha: string) => {
     setFecha(nuevaFecha);
     const res = await fetch("/api/availability", {
@@ -59,7 +59,7 @@ export function ReservarServicio({ servicio }: { servicio: Servicio }) {
     });
 
     const data = await res.json();
-
+    
     if (res.ok) {
       alert("Reserva creada");
       setOpen(false);
