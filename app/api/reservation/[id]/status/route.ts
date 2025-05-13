@@ -53,28 +53,22 @@ export async function PATCH(request: NextRequest) {
   return NextResponse.json({ reserva });
 }
 
+;
+
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: { id: string } }
 ) {
-  const user = await getUserFromCookie();
+  const { id } = context.params;
 
-  if (!user || user.role !== "PROVEEDOR") {
-    return new NextResponse("Unauthorized", { status: 401 });
+  try {
+    await prisma.reservation.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (e) {
+    return NextResponse.json({ e: "Error al eliminar" }, { status: 500 });
   }
-
-  const servicio = await prisma.service.findUnique({
-    where: { id: params.id },
-  });
-
-  if (!servicio || servicio.providerId !== user.id) {
-    return new NextResponse("No autorizado", { status: 403 });
-  }
-
-  await prisma.service.delete({
-    where: { id: params.id },
-  });
-
-  return new NextResponse("Servicio eliminado", { status: 200 });
 }
-
