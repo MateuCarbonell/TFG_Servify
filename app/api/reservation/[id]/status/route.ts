@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getUserFromCookie } from "@/lib/auth";
@@ -55,20 +56,18 @@ export async function PATCH(request: NextRequest) {
 
 ;
 
-export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
-  const { id } = context.params;
+export async function DELETE(req: NextRequest) {
+  const url = new URL(req.url);
+  const id = url.pathname.split("/").at(-2); // ✅ así recuperas el ID manualmente
 
   try {
     await prisma.reservation.delete({
-      where: { id },
+      where: { id: id || "" }, // por si acaso
     });
 
     return NextResponse.json({ success: true });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
-    return NextResponse.json({ e: "Error al eliminar" }, { status: 500 });
+    return NextResponse.json({ error: "Error al eliminar" }, { status: 500 });
   }
 }
+
