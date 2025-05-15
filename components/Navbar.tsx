@@ -73,12 +73,13 @@ export default function Navbar() {
         )}
 
         {/* Botón de Settings (todos los roles) */}
+        {user && (
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button variant="default" onClick={() => router.push("/settings")}>
             Settings
           </Button>
         </motion.div>
-
+        )}
         {/* Avatar dropdown */}
         {user && (
           <DropdownMenu>
