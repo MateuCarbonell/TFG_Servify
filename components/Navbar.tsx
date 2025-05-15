@@ -41,6 +41,8 @@ export default function Navbar() {
     router.push("/");
     router.refresh();
   };
+  console.log("User object:", user);
+
 
   return (
     <motion.nav
@@ -92,6 +94,7 @@ export default function Navbar() {
 
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{user.name || "Usuario"}</DropdownMenuLabel>
+                            
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => router.push("/profile")}>
                 Perfil
