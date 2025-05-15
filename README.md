@@ -12,7 +12,7 @@ https://tfg-servify.vercel.app/
 - JWT (autenticación)
 - Vercel (despliegue)
 
-## 🧑‍💼 Funcionalidades principales
+## Funcionalidades principales
 
 - Registro y login con roles (CLIENTE / PROVEEDOR)
 - Panel de proveedor: creación y gestión de servicios
