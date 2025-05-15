@@ -1,33 +1,56 @@
+"use client";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Search, UserPlus } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function LandingPage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-16 space-y-10">
-      <div>
+      {/* Título y descripción */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <h1 className="text-4xl font-bold tracking-tight mb-4">Bienvenido a Servify</h1>
         <p className="text-muted-foreground max-w-xl">
           Encuentra profesionales o ofrece tus servicios en segundos. Servify conecta clientes con proveedores de confianza en toda España.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="flex flex-col sm:flex-row gap-4">
+      {/* Botones */}
+      <motion.div
+        className="flex flex-col sm:flex-row gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <Link href="/login">
-          <Button variant="default" size="lg">
-            Iniciar sesión
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button variant="default" size="lg">Iniciar sesión</Button>
+          </motion.div>
         </Link>
         <Link href="/register">
-          <Button variant="outline" size="lg">
-            Registrarse
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button variant="outline" size="lg">Registrarse</Button>
+          </motion.div>
         </Link>
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10 max-w-3xl">
-        <div className="border rounded-xl p-6 shadow hover:shadow-lg transition">
+      {/* Tarjetas */}
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10 max-w-3xl"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Cliente */}
+        <motion.div
+          whileHover={{ y: -8 }}
+          className="border rounded-xl p-6 shadow hover:shadow-lg transition"
+        >
           <Search className="h-8 w-8 text-primary mb-3" />
           <h3 className="text-lg font-semibold mb-1">¿Eres cliente?</h3>
           <p className="text-sm text-muted-foreground mb-3">
@@ -36,9 +59,13 @@ export default function LandingPage() {
           <Link href="/buscar">
             <Button size="sm" variant="link">Buscar servicios</Button>
           </Link>
-        </div>
+        </motion.div>
 
-        <div className="border rounded-xl p-6 shadow hover:shadow-lg transition">
+        {/* Proveedor */}
+        <motion.div
+          whileHover={{ y: -8 }}
+          className="border rounded-xl p-6 shadow hover:shadow-lg transition"
+        >
           <UserPlus className="h-8 w-8 text-primary mb-3" />
           <h3 className="text-lg font-semibold mb-1">¿Eres proveedor?</h3>
           <p className="text-sm text-muted-foreground mb-3">
@@ -47,8 +74,8 @@ export default function LandingPage() {
           <Link href="/register">
             <Button size="sm" variant="link">Crear cuenta</Button>
           </Link>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </main>
   );
 }
