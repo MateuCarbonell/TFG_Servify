@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import NavbarWrapper from "@/components/NavbarWrapper"; // 👈 Usamos NavbarWrapper en lugar de Navbar directo
+import NavbarWrapper from "@/components/NavbarWrapper";
+import PageTransition from "@/components/PageTransition"; // 👈 NUEVO
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,8 +27,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <NavbarWrapper /> {/* 👈 Navbar solo si no estamos en /login o /register */}
-        <main>{children}</main> {/* 👈 Todo el contenido de cada página */}
+        <NavbarWrapper />
+        <PageTransition>
+          <main>{children}</main>
+        </PageTransition>
       </body>
     </html>
   );
