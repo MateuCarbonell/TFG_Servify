@@ -77,7 +77,7 @@ export default function Navbar() {
         {/* Botón de Settings (todos los roles) */}
         {user && (
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Button variant="default" onClick={() => router.push("/settings")}>
+          <Button variant="default" onClick={() => router.push("/profile/edit/")}>
             Settings
           </Button>
         </motion.div>
@@ -88,7 +88,10 @@ export default function Navbar() {
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer">
                 <AvatarImage src="" alt="Avatar" />
-                <AvatarFallback>{user.name?.charAt(0) ?? "U"}</AvatarFallback>
+
+                <AvatarFallback>{user.name?.charAt(0) ?? "U"}</AvatarFallback> {/* Cambia esto por la imagen del usuario */}
+                {/* Si no hay imagen, muestra la inicial del nombre */} 
+
               </Avatar>
             </DropdownMenuTrigger>
 
@@ -101,6 +104,7 @@ export default function Navbar() {
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleLogout}>
                 Cerrar sesión
+                
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
