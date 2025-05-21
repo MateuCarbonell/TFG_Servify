@@ -3,13 +3,7 @@ import prisma from "@/lib/prisma";
 import EditarServicioForm from "./EditServiceForm";
 import { redirect } from "next/navigation";
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
-
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: { params: { id: string } }) {
   const user = await getUserFromCookie();
 
   if (!user || user.role !== "PROVEEDOR") {
