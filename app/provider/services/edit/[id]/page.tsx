@@ -1,12 +1,18 @@
 import { getUserFromCookie } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import EditarServicioForm from "./EditServiceForm";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const user = await getUserFromCookie();
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
 
-  if (!user || user.role !== "PROVEEDOR") redirect("/");
+export default async function Page({ params }: PageProps) {
+  const user = await getUserFromCookie();
+  if (!user || user.role !== "PROVEEDOR") {
+    return null;
+  }
 
   const servicio = await prisma.service.findUnique({
     where: {
@@ -15,7 +21,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     },
   });
 
-  if (!servicio) redirect("/provider/services");
+  if (!servicio) return null;
 
   return <EditarServicioForm servicio={servicio} />;
 }
