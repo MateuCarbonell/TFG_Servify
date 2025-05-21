@@ -1,6 +1,7 @@
 import { getUserFromCookie } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import EditarServicioForm from "./EditServiceForm";
+import { redirect } from "next/navigation";
 
 type PageProps = {
   params: {
@@ -10,8 +11,9 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const user = await getUserFromCookie();
+
   if (!user || user.role !== "PROVEEDOR") {
-    return null;
+    redirect("/");
   }
 
   const servicio = await prisma.service.findUnique({
@@ -21,7 +23,9 @@ export default async function Page({ params }: PageProps) {
     },
   });
 
-  if (!servicio) return null;
+  if (!servicio) {
+    redirect("/provider/services");
+  }
 
   return <EditarServicioForm servicio={servicio} />;
 }
