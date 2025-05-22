@@ -22,93 +22,71 @@ export default function Navbar() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("/api/me");
+        const res = await fetch("/api/me", { credentials: "include" });
         if (res.ok) {
           const data = await res.json();
-          setUser(data.user);
+          setUser(data.user || data); // según cómo devuelvas el JSON
         }
-      } catch (error) {
-        console.error("No se pudo obtener el usuario", error);
+      } catch {
+        setUser(null);
       }
     };
-
     fetchUser();
   }, []);
 
   const handleLogout = async () => {
-    await fetch("/api/logout", { method: "POST" });
+    await fetch("/api/logout", { method: "POST", credentials: "include" });
     setUser(null);
-    router.push("/");
-    router.refresh();
+    router.push("/auth/login");
   };
-  console.log("User object:", user);
 
+  if (!user) return null;
 
   return (
     <motion.nav
-      initial={{ opacity: 0, y: -30 }}
+      initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="flex items-center justify-between p-4 border-b bg-white shadow-md"
+      transition={{ duration: 0.4 }}
+      className="flex items-center justify-between p-4 border-b bg-white shadow"
     >
-      <div>
-        <Logo />
-      </div>
+      <Logo />
 
       <div className="flex items-center gap-4">
-        {/* Botón para CLIENTE */}
-        {user?.role === "CLIENTE" && (
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button variant="outline" onClick={() => router.push("/buscar")}>
+        {user.role === "CLIENTE" && (
+          <>
+            <Button variant="outline" onClick={() => router.push("/cliente/buscar")}>
               Buscar Servicios
             </Button>
-          </motion.div>
-        )}
-
-        {/* Botón para PROVEEDOR */}
-        {user?.role === "PROVEEDOR" && (
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button variant="outline" onClick={() => router.push("/provider/services")}>
-              Gestionar Servicios
+            <Button variant="outline" onClick={() => router.push("/perfil")}>
+              Mis Reservas
             </Button>
-          </motion.div>
+          </>
         )}
 
-        {/* Botón de Settings (todos los roles) */}
-        {user && (
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Button variant="default" onClick={() => router.push("/profile/edit/")}>
-            Settings
-          </Button>
-        </motion.div>
+        {user.role === "PROVEEDOR" && (
+          <>
+            <Button variant="outline" onClick={() => router.push("/proveedor/servicios")}>
+              Mis Servicios
+            </Button>
+            <Button variant="outline" onClick={() => router.push("/proveedor/reservas")}>
+              Reservas Recibidas
+            </Button>
+          </>
         )}
-        {/* Avatar dropdown */}
-        {user && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer">
-                <AvatarImage src="" alt="Avatar" />
 
-                <AvatarFallback>{user.name?.charAt(0) ?? "U"}</AvatarFallback> {/* Cambia esto por la imagen del usuario */}
-                {/* Si no hay imagen, muestra la inicial del nombre */} 
-
-              </Avatar>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{user.name || "Usuario"}</DropdownMenuLabel>
-                            
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push("/provider/reservation")}>
-                Perfil
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleLogout}>
-                Cerrar sesión
-                
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="cursor-pointer">
+              <AvatarImage src="" alt="Avatar" />
+              <AvatarFallback>{user.name?.charAt(0).toUpperCase() ?? "U"}</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>{user.name || "Usuario"}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLogout}>Cerrar sesión</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </motion.nav>
   );

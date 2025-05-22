@@ -1,5 +1,5 @@
+// /app/proveedor/servicios/crear/page.tsx
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -8,11 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export default function CrearServicioPage() {
   const router = useRouter();
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    price: "",
-  });
+  const [form, setForm] = useState({ title: "", description: "", price: "" });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,7 +17,7 @@ export default function CrearServicioPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch("/api/services", {
+    const res = await fetch("/api/servicios", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -32,7 +28,7 @@ export default function CrearServicioPage() {
     });
 
     if (res.ok) {
-      router.push("/provider/services");
+      router.push("/proveedor/servicios");
     } else {
       alert("Error al crear servicio");
     }
@@ -43,21 +39,11 @@ export default function CrearServicioPage() {
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6 p-8 border rounded-xl shadow">
         <h2 className="text-2xl font-bold text-center">Crear Nuevo Servicio</h2>
 
-        <div className="space-y-2">
-          <Input name="title" placeholder="Título del servicio" value={form.title} onChange={handleChange} required />
-        </div>
+        <Input name="title" placeholder="Título" value={form.title} onChange={handleChange} required />
+        <Textarea name="description" placeholder="Descripción" value={form.description} onChange={handleChange} required />
+        <Input name="price" type="number" placeholder="Precio" value={form.price} onChange={handleChange} required />
 
-        <div className="space-y-2">
-          <Textarea name="description" placeholder="Descripción" value={form.description} onChange={handleChange} required />
-        </div>
-
-        <div className="space-y-2">
-          <Input name="price" type="number" placeholder="Precio" value={form.price} onChange={handleChange} required />
-        </div>
-
-        <Button type="submit" className="w-full">
-          Crear Servicio
-        </Button>
+        <Button type="submit" className="w-full">Crear Servicio</Button>
       </form>
     </div>
   );

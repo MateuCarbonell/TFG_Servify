@@ -1,21 +1,20 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { verifyToken } from "@/lib/auth"; // Asegúrate de tener tu verificador de JWT
+import { NextRequest, NextResponse } from "next/server";
+import { verify } from "jsonwebtoken";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const token = req.cookies.get("token")?.value;
+
+  if (!token) return NextResponse.json(null, { status: 200 });
+
   try {
-    const cookieStore = cookies();
-    const token = (await cookieStore).get("token")?.value;
+    const usuario = verify(token, process.env.JWT_SECRET!) as {
+      id: string;
+      name?: string;
+      role: string;
+    };
 
-    if (!token) {
-      return NextResponse.json({ user: null });
-    }
-
-    const user = await verifyToken(token);
-
-    return NextResponse.json({ user });
-  } catch (error) {
-    console.error("Error obteniendo el usuario:", error);
-    return NextResponse.json({ user: null });
+    return NextResponse.json(usuario);
+  } catch {
+    return NextResponse.json(null, { status: 200 });
   }
 }

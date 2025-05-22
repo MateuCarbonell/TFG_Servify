@@ -1,3 +1,4 @@
+// api/user/update/route.ts
 import { getUserFromCookie } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";

@@ -1,3 +1,4 @@
+// app/profile/edit/page.tsx
 import { getUserFromCookie } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import EditarPerfilForm from "./EditProfileForm";

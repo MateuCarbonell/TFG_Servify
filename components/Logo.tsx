@@ -1,5 +1,5 @@
 "use client"; // obligatorio si estás en App Router
-
+// components/Logo.tsx
 import { useRouter } from "next/navigation"; // cambia a "next/router" si usas Pages Router
 import Image from "next/image";
 
