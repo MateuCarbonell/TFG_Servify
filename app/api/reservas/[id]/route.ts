@@ -2,12 +2,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-// PATCH: Confirmar o cancelar reserva
+// ✅ Más compatible: desestructura `params` directamente
 export async function PATCH(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = context.params.id;
+  const id = params.id;
 
   try {
     const body = await request.json();
