@@ -20,6 +20,17 @@ export async function POST(req: NextRequest) {
 
   const { title, description, price } = await req.json();
 
+    // Validaciones back
+  if (!title || title.length < 3) {
+    return NextResponse.json({ error: "Título demasiado corto" }, { status: 400 });
+  }
+  if (!description || description.length < 10) {
+    return NextResponse.json({ error: "Descripción demasiado corta" }, { status: 400 });
+  }
+  if (!price || isNaN(price) || Number(price) <= 0) {
+    return NextResponse.json({ error: "Precio inválido" }, { status: 400 });
+  }
+
   const servicio = await prisma.service.create({
     data: {
       title,
