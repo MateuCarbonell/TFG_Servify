@@ -1,3 +1,6 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/MateuCarbonell/TFG_Servify)
+
+
 # Servify – Proyecto TFG 2025
 
 Aplicación web de reservas de servicios locales, desarrollada con Next.js 15, Prisma y MySQL en la nube. Permite a usuarios registrarse como clientes o proveedores, crear y buscar servicios, y gestionar reservas.
