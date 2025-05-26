@@ -2,10 +2,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-// ✅ Más compatible: desestructura `params` directamente
+// ✅ Tipado correcto esperado por Next.js
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Record<string, string> }
 ) {
   const id = params.id;
 
