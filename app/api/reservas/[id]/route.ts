@@ -1,18 +1,33 @@
+// /app/api/reservas/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-// PATCH /api/reservas/:id → confirmar o cancelar una reserva
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
-  const { status } = await request.json();
+// PATCH: Confirmar o cancelar una reserva (solo proveedor)
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id;
 
-  if (!["CONFIRMED", "CANCELLED"].includes(status)) {
-    return NextResponse.json({ error: "Estado inválido" }, { status: 400 });
+  try {
+    const body = await request.json();
+    const estado = body.status;
+
+    if (!estado || !["CONFIRMED", "CANCELLED"].includes(estado)) {
+      return NextResponse.json({ error: "Estado inválido" }, { status: 400 });
+    }
+
+    const actualizada = await prisma.reservation.update({
+      where: { id },
+      data: { status: estado },
+    });
+
+    return NextResponse.json(actualizada);
+  } catch (error) {
+    console.error("Error al actualizar reserva:", error);
+    return NextResponse.json(
+      { error: "Error al actualizar la reserva" },
+      { status: 500 }
+    );
   }
-
-  const reserva = await prisma.reservation.update({
-    where: { id: params.id },
-    data: { status },
-  });
-
-  return NextResponse.json(reserva);
 }
