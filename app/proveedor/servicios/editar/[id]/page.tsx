@@ -1,5 +1,5 @@
-"use client";
 // /app/proveedor/servicios/editar/[id]/page.tsx
+"use client";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import { toast } from "sonner";
 export default function EditarServicioPage() {
   const router = useRouter();
   const params = useParams();
-  const [form, setForm] = useState({ title: "", description: "", price: "" });
+  const [form, setForm] = useState({ title: "", description: "", price: "", imageUrl: "" });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,6 +21,7 @@ export default function EditarServicioPage() {
           title: data.title,
           description: data.description,
           price: data.price.toString(),
+          imageUrl: data.imageUrl ?? "",
         });
         setLoading(false);
       });
@@ -33,6 +34,17 @@ export default function EditarServicioPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // ✅ Validaciones con toasts
+    if (form.title.length < 3) {
+      return toast.error("El título debe tener al menos 3 caracteres");
+    }
+    if (form.description.length < 10) {
+      return toast.error("La descripción debe tener al menos 10 caracteres");
+    }
+    if (!form.price || Number(form.price) <= 0) {
+      return toast.error("El precio debe ser mayor que 0");
+    }
+
     const res = await fetch(`/api/servicios/${params.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -40,14 +52,15 @@ export default function EditarServicioPage() {
         title: form.title,
         description: form.description,
         price: parseFloat(form.price),
+        imageUrl: form.imageUrl || null,
       }),
     });
 
     if (res.ok) {
-      router.push("/proveedor/servicios");
       toast.success("Servicio actualizado");
+      router.push("/proveedor/servicios");
     } else {
-     toast.error("Error al actualizar el servicio");
+      toast.error("Error al actualizar el servicio");
     }
   };
 
@@ -55,14 +68,44 @@ export default function EditarServicioPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6 p-8 border rounded-xl shadow">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md space-y-6 p-8 border rounded-xl shadow"
+      >
         <h2 className="text-2xl font-bold text-center">Editar Servicio</h2>
 
-        <Input name="title" placeholder="Título" value={form.title} onChange={handleChange} required />
-        <Textarea name="description" placeholder="Descripción" value={form.description} onChange={handleChange} required />
-        <Input name="price" type="number" placeholder="Precio" value={form.price} onChange={handleChange} required />
+        <Input
+          name="title"
+          placeholder="Título"
+          value={form.title}
+          onChange={handleChange}
+          required
+        />
+        <Textarea
+          name="description"
+          placeholder="Descripción"
+          value={form.description}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          name="price"
+          type="number"
+          placeholder="Precio"
+          value={form.price}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          name="imageUrl"
+          placeholder="URL de imagen (opcional)"
+          value={form.imageUrl}
+          onChange={handleChange}
+        />
 
-        <Button type="submit" className="w-full">Guardar Cambios</Button>
+        <Button type="submit" className="w-full">
+          Guardar Cambios
+        </Button>
       </form>
     </div>
   );
