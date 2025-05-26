@@ -1,4 +1,3 @@
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/MateuCarbonell/TFG_Servify)
 
 
 # Servify – Proyecto TFG 2025
