@@ -31,6 +31,7 @@ model Service {
   location    String
   type        String
   availability Json
+  imageUrl    String?
   provider    User     @relation("UserServices", fields: [providerId], references: [id])
   providerId  String
   reservations Reservation[]
