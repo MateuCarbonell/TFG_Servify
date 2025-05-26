@@ -32,24 +32,25 @@ export async function PATCH(request: NextRequest, context: { params: { id: strin
   return NextResponse.json(servicioActualizado);
 }
 
-export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
-  const id = context.params.id;
- // Con esto se eliminan las reservas asociadas al servicio
-  // y luego se elimina el servicio
+export async function DELETE(
+  request: NextRequest,
+  context: { params?: { id?: string } }
+) {
+  const id = context.params?.id;
+
+  if (!id) {
+    return NextResponse.json({ error: "ID no proporcionado" }, { status: 400 });
+  }
+
   try {
-    // 🔸 Eliminar primero las reservas asociadas
-    await prisma.reservation.deleteMany({
-      where: { serviceId: id },
-    });
+    await prisma.reservation.deleteMany({ where: { serviceId: id } });
+    await prisma.service.delete({ where: { id } });
 
-    // 🔸 Luego eliminar el servicio
-    await prisma.service.delete({
-      where: { id },
-    });
-
-    return NextResponse.json({ mensaje: "Servicio y reservas eliminados correctamente" });
-  } catch (error) {
-    console.error("Error al eliminar servicio:", error);
-    return NextResponse.json({ error: "No se pudo eliminar el servicio" }, { status: 500 });
+    return NextResponse.json({ mensaje: "Servicio eliminado" });
+  } catch  {
+    return NextResponse.json({ error: "Error al eliminar" }, { status: 500 });
   }
 }
+
+
+
