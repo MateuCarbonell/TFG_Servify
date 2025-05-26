@@ -1,78 +1,46 @@
-// /app/api/reservas/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { verify } from "jsonwebtoken";
 import prisma from "@/lib/prisma";
+import bcrypt from "bcryptjs";
+import { sign } from "jsonwebtoken";
 
-// Crear una reserva (solo cliente)
+// Registro de usuario
 export async function POST(req: NextRequest) {
-  const token = req.cookies.get("token")?.value; 
+  const { name, email, password, role } = await req.json();
 
-  if (!token) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-
-  try {
-    const usuario = verify(token, process.env.JWT_SECRET!) as { id: string; role: string };
-    if (usuario.role !== "CLIENTE") {
-      return NextResponse.json({ error: "Solo los clientes pueden reservar" }, { status: 403 });
-    }
-
-    const { serviceId, reservationDate } = await req.json();
-    if (!serviceId || !reservationDate) {
-      return NextResponse.json({ error: "Datos incompletos" }, { status: 400 });
-    }
-
-    const reserva = await prisma.reservation.create({
-      data: {
-        serviceId,
-        reservationDate: new Date(reservationDate),
-        clientId: usuario.id,
-      },
-    });
-
-    return NextResponse.json({ reserva });
-  } catch {
-    return NextResponse.json({ error: "Token inválido o error interno" }, { status: 401 });
+  if (!name || !email || !password || !role) {
+    return NextResponse.json({ error: "Faltan datos" }, { status: 400 });
   }
-}
 
-// Obtener reservas del cliente o proveedor
-export async function GET(req: NextRequest) {
-  const token = req.cookies.get("token")?.value; 
-  if (!token) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-
-  try {
-    const usuario = verify(token, process.env.JWT_SECRET!) as { id: string; role: string };
-    let reservas;
-
-    if (usuario.role === "CLIENTE") {
-      reservas = await prisma.reservation.findMany({
-        where: { clientId: usuario.id },
-        include: {
-          service: {
-            select: {
-              title: true,
-              type: true,
-              price: true,
-              provider: { select: { name: true } },
-            },
-          },
-        },
-      });
-    } else {
-      reservas = await prisma.reservation.findMany({
-        where: { service: { providerId: usuario.id } },
-        include: {
-          client: { select: { name: true, email: true } },
-          service: {
-            include: {
-              provider: { select: { name: true } },
-            },
-          },
-        },
-      });
-    }
-
-    return NextResponse.json({ reservas });
-  } catch {
-    return NextResponse.json({ error: "Token inválido" }, { status: 401 });
+  const existe = await prisma.user.findUnique({ where: { email } });
+  if (existe) {
+    return NextResponse.json({ error: "El email ya está registrado" }, { status: 400 });
   }
+
+  const hashed = await bcrypt.hash(password, 10);
+
+  const user = await prisma.user.create({
+    data: { name, email, password: hashed, role },
+  });
+
+  const token = sign(
+    { id: user.id, role: user.role, name: user.name },
+    process.env.JWT_SECRET!,
+    { expiresIn: "7d" }
+  );
+
+  const response = NextResponse.json({
+    id: user.id,
+    name: user.name,
+    role: user.role,
+    email: user.email,
+  });
+
+  response.cookies.set("token", token, {
+    httpOnly: true,
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+
+  return response;
 }
