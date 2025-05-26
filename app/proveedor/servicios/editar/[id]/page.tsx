@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 export default function EditarServicioPage() {
   const router = useRouter();
@@ -44,8 +45,9 @@ export default function EditarServicioPage() {
 
     if (res.ok) {
       router.push("/proveedor/servicios");
+      toast.success("Servicio actualizado");
     } else {
-      alert("Error al actualizar");
+     toast.error("Error al actualizar el servicio");
     }
   };
 
