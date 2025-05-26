@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner"
+
+
+
 
 // Tipo de servicio
 interface Servicio {
@@ -28,15 +33,21 @@ export default function ServiciosProveedorPage() {
   
   const eliminar = async (id: string) => {
     const ok = confirm("¿Eliminar servicio?");
-    if (!ok) return;
-
+    if (!ok) {
+        toast.error("Eliminación cancelada");
+        return;
+      }
     const res = await fetch(`/api/servicios/${id}`, { method: "DELETE" });
-    if (res.ok) cargar();
-    else alert("Error al eliminar");
+    if (res.ok) {
+      toast.success("Servicio eliminado");
+      cargar();
+
+    }else alert("Error al eliminar");
   };
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
+       <Toaster />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Mis servicios</h1>
         <Link href="/proveedor/servicios/crear">
@@ -66,8 +77,10 @@ export default function ServiciosProveedorPage() {
                 </div>
               </CardContent>
             </Card>
+            
           ))}
         </div>
+        
       )}
     </div>
   );
