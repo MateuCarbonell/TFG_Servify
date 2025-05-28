@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 // Crear una reserva (solo cliente)
 export async function POST(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
+
   if (!token) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
   try {
@@ -16,6 +17,22 @@ export async function POST(req: NextRequest) {
     const { serviceId, reservationDate } = await req.json();
     if (!serviceId || !reservationDate) {
       return NextResponse.json({ error: "Datos incompletos" }, { status: 400 });
+    }
+
+    //Validar que no haya otra reserva confirmada a esa hora
+    const yaReservada = await prisma.reservation.findFirst({
+      where: {
+        serviceId,
+        reservationDate: new Date(reservationDate),
+        status: "CONFIRMED",
+      },
+    });
+
+    if (yaReservada) {
+      return NextResponse.json(
+        { error: "Esa hora ya ha sido reservada por otro cliente." },
+        { status: 409 }
+      );
     }
 
     const reserva = await prisma.reservation.create({
@@ -31,6 +48,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Token inválido o error interno" }, { status: 401 });
   }
 }
+
 
 // Obtener reservas del cliente o proveedor
 export async function GET(req: NextRequest) {
