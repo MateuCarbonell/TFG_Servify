@@ -36,8 +36,9 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST", credentials: "include" });
-    setUser(null);
-    router.push("/auth/login");
+    setUser(null); // refrescar pagina
+    window.location.href = "/";;
+    
   };
 
   if (!user) return null;
@@ -47,7 +48,7 @@ export default function Navbar() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="flex items-center justify-between p-4 border-b bg-white shadow"
+      className="z-20 relative flex items-center justify-between p-4 border-b bg-white shadow-md"
     >
       <Logo />
 
