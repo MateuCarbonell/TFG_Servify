@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No autorizado" }, { status: 403 });
     }
 
-    const { title, description, price, imageUrl } = await req.json();
+    const { title, description, price, imageUrl, type } = await req.json();
 
     // Validaciones back
     if (!title || title.length < 3) {
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
         imageUrl: imageUrl || null,
         providerId: usuario.id,
         location: "",
-        type: "General",
+        type,
         availability: {},
       },
     });

@@ -6,11 +6,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 
 
 export default function CrearServicioPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ title: "", description: "", price: "",imageUrl: ""  });
+  const [form, setForm] = useState({
+  title: "",
+  description: "",
+  price: "",
+  imageUrl: "",
+  type: "", 
+});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -29,6 +37,9 @@ export default function CrearServicioPage() {
   if (!form.price || Number(form.price) <= 0) {
     return toast.error("El precio debe ser mayor que 0");
   }
+  if (!form.type) {
+  return toast.error("Debes seleccionar un tipo de servicio");
+}
 
   // Enviar al backend
   const res = await fetch("/api/servicios", {
@@ -39,6 +50,7 @@ export default function CrearServicioPage() {
       description: form.description,
       price: parseFloat(form.price),
       imageUrl: form.imageUrl || null, // opcional
+      type: form.type
     }),
   });
 
@@ -65,6 +77,20 @@ export default function CrearServicioPage() {
         value={form.imageUrl}
         onChange={handleChange}
         />
+        <label className="block text-sm font-medium">Tipo de servicio</label>
+        <Select onValueChange={(value) => setForm({ ...form, type: value })}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Selecciona un tipo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Limpieza">Limpieza</SelectItem>
+            <SelectItem value="Electricidad">Electricidad</SelectItem>
+            <SelectItem value="Fontanería">Fontanería</SelectItem>
+            <SelectItem value="Reformas">Reformas</SelectItem>
+            <SelectItem value="Otros">Otros</SelectItem>
+          </SelectContent>
+        </Select>
+
         <Button type="submit" className="w-full">Crear Servicio</Button>
       </form>
     </div>

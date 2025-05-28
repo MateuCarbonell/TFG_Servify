@@ -125,7 +125,9 @@ export default function BuscarServiciosPage() {
                 <CardContent>
                   <p className="text-sm opacity-90 mb-2">{servicio.description}</p>
                   <p className="font-semibold">Precio: {servicio.price} €</p>
-
+                  <p className="text-xs text-white bg-blue-500 inline-block px-2 py-1 rounded">
+                    Tipo: {servicio.type}
+                  </p>
                   <div className="mt-4 space-y-2">
                     <label className="text-sm font-medium text-black">
                       Selecciona fecha y hora:
@@ -138,6 +140,7 @@ export default function BuscarServiciosPage() {
                         }
                       />
                     </div>
+
 
                     <Button onClick={() => reservar(servicio.id)}>
                       Reservar
