@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: "Servify",
   description: "Encuentra y reserva servicios de calidad cerca de ti",
   icons: {
-    icon: "/favicon.ico", // 👈 esta línea es la clave
+    icon: "/favicon.ico", 
   }
 };
 

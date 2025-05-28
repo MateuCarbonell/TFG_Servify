@@ -1,11 +1,10 @@
-// /app/page.tsx
 "use client";
 
+import CSSParticlesBackground from "@/components/CSSParticlesBackground";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-
-// import SplineWrapper from "@/components/SplineWrapper";
+import { Sparkles } from "lucide-react"; // puedes usar cualquier ícono
 
 type User = {
   id: string;
@@ -28,24 +27,38 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-full overflow-hidden">
-      {/* Animación 3D */}
-      <div className="absolute inset-0 z-0">
-        {/* <Spline scene="https://prod.spline.design/95uJI9Vk-qpD3t18/scene.splinecode" /> */}
-      </div>
+    <main className="relative h-screen w-full overflow-hidden bg-gradient-to-br from-indigo-600 via-blue-600 to-indigo-700 text-white">
+      <CSSParticlesBackground />
 
-      {/* Contenido sobre el fondo */}
-      <div className="relative z-10 h-full w-full flex flex-col items-center justify-center text-center px-4">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="bg-white/20 backdrop-blur-md rounded-xl p-8 max-w-xl shadow-lg"
+          transition={{ duration: 0.8 }}
+          className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 max-w-xl w-full shadow-2xl"
         >
-          <h1 className="text-4xl font-bold text-white mb-4">Bienvenido a ServiFy</h1>
-          <p className="text-white text-md mb-6">
+          <div className="flex justify-center mb-4">
+            <Sparkles className="w-10 h-10 text-white" />
+          </div>
+
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl font-bold mb-4"
+          >
+            Bienvenido a ServiFy
+          </motion.h1>
+
+          <p className="text-md mb-6">
             Encuentra profesionales o ofrece tus servicios fácilmente.
           </p>
+
+          <ul className="text-sm mb-6 space-y-1 opacity-90">
+            <li>✔ Publica y encuentra servicios cerca de ti</li>
+            <li>✔ Lee valoraciones reales de otros usuarios</li>
+            <li>✔ Gestiona tus reservas desde tu panel</li>
+          </ul>
 
           {!user && (
             <motion.div
@@ -56,13 +69,13 @@ export default function LandingPage() {
             >
               <Link
                 href="/auth/login"
-                className="px-4 py-2 bg-black text-white rounded-md hover:bg-neutral-800 transition"
+                className="px-5 py-2 rounded-md bg-white text-black font-medium shadow hover:bg-gray-200 transition"
               >
                 Iniciar sesión
               </Link>
               <Link
                 href="/auth/register"
-                className="px-4 py-2 bg-white text-black rounded-md hover:bg-neutral-100 transition"
+                className="px-5 py-2 rounded-md bg-indigo-500 text-white font-medium shadow hover:bg-indigo-600 transition"
               >
                 Registrarse
               </Link>

@@ -5,6 +5,8 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -40,6 +42,10 @@ export default function LoginPage() {
         <Input name="password" type="password" placeholder="Contraseña" onChange={handleChange} required />
         {error && <p className="text-sm text-red-500">{error}</p>}
         <Button type="submit" className="w-full">Entrar</Button>
+        {/* Añadir link navegacion para ir al registro */}
+        <p className="text-sm text-center">
+          ¿No tienes cuenta? <Link href="/auth/register" className="text-blue-500 hover:underline">Regístrate aquí</Link>
+        </p>
       </form>
     </div>
   );
