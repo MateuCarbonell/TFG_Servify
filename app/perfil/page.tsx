@@ -2,6 +2,7 @@
 import { getUserFromCookie } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import FormularioReview from "@/components/FormularioReview";
 
 export default async function PerfilClientePage() {
   const user = await getUserFromCookie();
@@ -37,6 +38,9 @@ export default async function PerfilClientePage() {
                 Fecha: {new Date(reserva.reservationDate).toLocaleString()}
               </p>
               <p className="text-sm font-semibold text-blue-600">{reserva.status}</p>
+              {reserva.status === "CONFIRMED" && (
+              <FormularioReview serviceId={reserva.serviceId} />
+            )}
             </li>
           ))}
         </ul>
