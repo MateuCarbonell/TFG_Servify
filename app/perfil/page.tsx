@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // /app/perfil/page.tsx (cliente)
 import { getUserFromCookie } from "@/lib/auth";
 import prisma from "@/lib/prisma";
@@ -29,7 +30,8 @@ export default async function PerfilClientePage() {
         <p className="text-muted-foreground">No tienes reservas todavía.</p>
       ) : (
         <ul className="space-y-4">
-          {reservas.map((reserva) => (
+          
+          {reservas.map((reserva: any) => (
             <li key={reserva.id} className="border p-4 rounded-lg shadow">
               <h2 className="font-semibold">{reserva.service.title}</h2>
               <p className="text-sm">Ubicación: {reserva.service.location}</p>

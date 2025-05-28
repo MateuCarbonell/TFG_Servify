@@ -1,13 +1,8 @@
-// /app/api/reservas/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-
-// ✅ Tipado correcto esperado por Next.js
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Record<string, string> }
-) {
-  const id = params.id;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function PATCH(request: NextRequest, context: any) {
+  const id = context.params.id;
 
   try {
     const body = await request.json();

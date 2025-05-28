@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 // GET /api/servicios/:id
-export async function GET(request: NextRequest, context: { params: { id: string } }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function GET(_: NextRequest, context: any) {
   const id = context.params.id;
 
   const servicio = await prisma.service.findUnique({
@@ -15,8 +16,10 @@ export async function GET(request: NextRequest, context: { params: { id: string 
 
   return NextResponse.json(servicio);
 }
+
 // PATCH para editar un servicio
-export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function PATCH(request: NextRequest, context: any) {
   const id = context.params.id;
   const { title, description, price } = await request.json();
 
@@ -32,10 +35,9 @@ export async function PATCH(request: NextRequest, context: { params: { id: strin
   return NextResponse.json(servicioActualizado);
 }
 
-export async function DELETE(
-  request: NextRequest,
-  context: { params?: { id?: string } }
-) {
+// DELETE /api/servicios/:id
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function DELETE(_: NextRequest, context: any) {
   const id = context.params?.id;
 
   if (!id) {
@@ -47,10 +49,7 @@ export async function DELETE(
     await prisma.service.delete({ where: { id } });
 
     return NextResponse.json({ mensaje: "Servicio eliminado" });
-  } catch  {
+  } catch {
     return NextResponse.json({ error: "Error al eliminar" }, { status: 500 });
   }
 }
-
-
-

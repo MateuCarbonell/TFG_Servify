@@ -2,12 +2,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-// Carga dinámica del componente Spline
-const Spline = dynamic(() => import("@splinetool/react-spline"), { ssr: false });
+// import SplineWrapper from "@/components/SplineWrapper";
 
 type User = {
   id: string;
@@ -33,7 +31,7 @@ export default function LandingPage() {
     <main className="relative h-screen w-full overflow-hidden">
       {/* Animación 3D */}
       <div className="absolute inset-0 z-0">
-        <Spline scene="https://prod.spline.design/95uJI9Vk-qpD3t18/scene.splinecode" />
+        {/* <Spline scene="https://prod.spline.design/95uJI9Vk-qpD3t18/scene.splinecode" /> */}
       </div>
 
       {/* Contenido sobre el fondo */}
