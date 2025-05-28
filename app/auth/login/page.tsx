@@ -3,12 +3,10 @@
 // /app/auth/login/page.tsx
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
@@ -28,8 +26,7 @@ export default function LoginPage() {
     const data = await res.json();
 
     if (res.ok) {
-      if (data.role === "CLIENTE") router.push("/cliente/buscar");
-      else router.push("/proveedor/servicios");
+      window.location.href = "/";
     } else {
       setError(data.error || "Error al iniciar sesión");
     }
