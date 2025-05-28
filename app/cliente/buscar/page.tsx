@@ -1,9 +1,11 @@
-// /app/cliente/buscar/page.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { toast } from "sonner";
+import FechaHoraPicker from "@/components/FechaHoraPicker";
 
 // Tipo simplificado del servicio
 type Servicio = {
@@ -17,7 +19,7 @@ export default function BuscarServiciosPage() {
   const [servicios, setServicios] = useState<Servicio[]>([]);
   const [filtroTitulo, setFiltroTitulo] = useState("");
   const [precioMax, setPrecioMax] = useState("");
-  const [fechas, setFechas] = useState<{ [id: string]: string }>({});
+  const [fechas, setFechas] = useState<{ [id: string]: Date | null }>({});
 
   useEffect(() => {
     fetch("/api/servicios")
@@ -27,18 +29,28 @@ export default function BuscarServiciosPage() {
 
   const reservar = async (servicioId: string) => {
     const fecha = fechas[servicioId];
-    if (!fecha) return alert("Selecciona una fecha");
+    if (!fecha) return toast.error("Selecciona una fecha");
+
+    const ahora = new Date();
+    if (fecha < ahora) {
+      return toast.error("No puedes reservar en una fecha pasada.");
+    }
 
     const res = await fetch("/api/reservas", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ serviceId: servicioId, reservationDate: fecha }),
-      credentials: "include"
-
+      body: JSON.stringify({
+        serviceId: servicioId,
+        reservationDate: fecha.toISOString(),
+      }),
+      credentials: "include",
     });
 
-    if (res.ok) alert("Reserva hecha correctamente");
-    else alert("Error al reservar");
+    if (res.ok) {
+      toast.success("Reserva hecha correctamente");
+    } else {
+      toast.error("Error al reservar, fecha ya reservada");
+    }
   };
 
   const serviciosFiltrados = servicios.filter(s =>
@@ -78,14 +90,21 @@ export default function BuscarServiciosPage() {
                 <p className="font-semibold">Precio: {servicio.price} €</p>
 
                 <div className="mt-4 space-y-2">
-                  <Input
-                    type="datetime-local"
-                    value={fechas[servicio.id] || ""}
-                    onChange={(e) =>
-                      setFechas({ ...fechas, [servicio.id]: e.target.value })
-                    }
-                  />
+                  <label className="text-sm font-medium">Selecciona fecha y hora:</label>
+                  <div className="relative flex items-center">
+                    <FechaHoraPicker
+                      value={fechas[servicio.id] || null}
+                      onChange={(date) =>
+                        setFechas({ ...fechas, [servicio.id]: date })
+                      }
+                    />
+                  </div>
+
                   <Button onClick={() => reservar(servicio.id)}>Reservar</Button>
+
+                  <Link href={`/cliente/servicios/${servicio.id}`}>
+                    <Button variant="outline" className="mt-4">Reseñas</Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
