@@ -117,6 +117,8 @@
     @apply border-border outline-ring/50;
   }
   body {
-  @apply bg-[#cfd8f0] text-gray-900;
+  @apply bg-[#dbe3ff] text-gray-900 antialiased;
   }
 }
+
+

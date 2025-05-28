@@ -27,7 +27,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-full overflow-hidden bg-gradient-to-br from-indigo-600 via-blue-600 to-indigo-700 text-white">
+    <main className="relative h-screen w-full overflow-hidden bg-[#726ADE] text-white">
       <CSSParticlesBackground />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
