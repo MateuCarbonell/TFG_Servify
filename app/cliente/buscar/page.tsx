@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { toast } from "sonner";
 import FechaHoraPicker from "@/components/FechaHoraPicker";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+
 
 // Tipo simplificado del servicio
 type Servicio = {
@@ -13,6 +15,8 @@ type Servicio = {
   title: string;
   description: string;
   price: number;
+  type: string; // General, Fontanería, Electricidad, etc.
+  image?: string; // URL de la imagen del servicio
 };
 
 export default function BuscarServiciosPage() {
@@ -20,6 +24,8 @@ export default function BuscarServiciosPage() {
   const [filtroTitulo, setFiltroTitulo] = useState("");
   const [precioMax, setPrecioMax] = useState("");
   const [fechas, setFechas] = useState<{ [id: string]: Date | null }>({});
+  const [tipo, setTipo] = useState("todos");
+
 
   useEffect(() => {
     fetch("/api/servicios")
@@ -54,9 +60,10 @@ export default function BuscarServiciosPage() {
   };
 
   const serviciosFiltrados = servicios.filter(s =>
-    s.title.toLowerCase().includes(filtroTitulo.toLowerCase()) &&
-    (!precioMax || s.price <= parseFloat(precioMax))
-  );
+  s.title.toLowerCase().includes(filtroTitulo.toLowerCase()) &&
+  (!precioMax || s.price <= parseFloat(precioMax)) &&
+  (tipo === "todos" || s.type === tipo)
+);
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -74,6 +81,18 @@ export default function BuscarServiciosPage() {
           value={precioMax}
           onChange={(e) => setPrecioMax(e.target.value)}
         />
+        <Select onValueChange={setTipo}>
+          <SelectTrigger>
+            <SelectValue placeholder="Filtrar por tipo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="todos">Todos</SelectItem>
+            <SelectItem value="Fontanería">Fontanería</SelectItem>
+            <SelectItem value="Electricidad">Electricidad</SelectItem>
+            <SelectItem value="Peluquería">Peluquería</SelectItem>
+            <SelectItem value="General">Otros</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
