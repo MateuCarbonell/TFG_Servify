@@ -46,7 +46,7 @@ export default function ReservasProveedorPage() {
       ) : (
         <ul className="space-y-4">
           {reservas.map((reserva) => (
-            <li key={reserva.id} className="border p-4 rounded-lg shadow">
+            <li key={reserva.id} className="border bg-white p-4 rounded-lg shadow">
               <h2 className="font-semibold">{reserva.service.title}</h2>
               <p className="text-sm">Cliente: {reserva.client.name}</p>
               <p className="text-sm text-gray-500">

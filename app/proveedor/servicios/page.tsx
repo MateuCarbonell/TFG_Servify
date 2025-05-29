@@ -1,8 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
@@ -39,7 +38,9 @@ export default function ServiciosProveedorPage() {
     if (res.ok) {
       toast.success("Servicio eliminado");
       cargar();
-    } else alert("Error al eliminar");
+    } else {
+      toast.error("Error al eliminar");
+    }
   };
 
   return (
@@ -55,33 +56,43 @@ export default function ServiciosProveedorPage() {
       {servicios.length === 0 ? (
         <p className="text-muted-foreground">No has creado servicios todavía.</p>
       ) : (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {servicios.map((s) => (
-            <Card key={s.id}>
-              <CardHeader>
-                <CardTitle>{s.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <img
-                  src={s.imageUrl || "/placeholder.jpg"}
-                  alt={s.title}
-                  onError={(e) => {
-                    e.currentTarget.src = "/placeholder.jpg";
-                  }}
-                  className="w-full h-48 object-cover rounded-md mb-4"
-                />
-                <p className="text-muted-foreground mb-2">{s.description}</p>
-                <p className="text-sm text-muted-foreground mb-2">Tipo: {s.type}</p>
-                <p className="font-medium">Precio: {s.price} €</p>
-                <div className="flex gap-2 mt-4">
-                  <Link href={`/proveedor/servicios/editar/${s.id}`}>
-                    <Button variant="outline">Editar</Button>
-                  </Link>
-                  <Button variant="destructive" onClick={() => eliminar(s.id)}>
-                    Eliminar
+            <Card
+              key={s.id}
+              className="bg-white/30 backdrop-blur-md text-black shadow-lg rounded-xl border border-white/50 p-5 hover:shadow-xl transition"
+            >
+              <CardTitle className="text-xl font-bold mb-3">{s.title}</CardTitle>
+
+              <p className="text-sm text-black/80 mb-2 line-clamp-3">
+                {s.description}
+              </p>
+
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-semibold text-base">💶 {s.price} €</span>
+                <span className="text-xs px-3 py-1 bg-indigo-600 text-white rounded-full shadow">
+                  {s.type}
+                </span>
+              </div>
+
+              {/* === Botones con estilo consistente al ejemplo de "Reservar" === */}
+              <div className="space-y-2 mt-4">
+                <Link href={`/proveedor/servicios/editar/${s.id}`}>
+                  <Button
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold"
+                  >
+                    Editar
                   </Button>
-                </div>
-              </CardContent>
+                </Link>
+
+                <Button
+                  variant="outline"
+                  onClick={() => eliminar(s.id)}
+                  className=" mt-2 w-full text-red-600 border-red-500 hover:bg-red-100 font-semibold"
+                >
+                  Eliminar
+                </Button>
+              </div>
             </Card>
           ))}
         </div>

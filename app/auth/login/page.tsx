@@ -70,7 +70,7 @@ export default function LoginPage() {
           Entrar
         </Button>
 
-        <p className="text-sm text-center text-white/80 mt-4">
+        <p className="text-sm text-center text-black/80 mt-4">
           ¿No tienes cuenta?{" "}
           <Link
             href="/auth/register"
