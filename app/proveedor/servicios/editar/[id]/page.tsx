@@ -6,11 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 export default function EditarServicioPage() {
   const router = useRouter();
   const params = useParams();
-  const [form, setForm] = useState({ title: "", description: "", price: "", imageUrl: "" });
+  const [form, setForm] = useState({ title: "", description: "", price: "", imageUrl: "", type: "" });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,6 +28,7 @@ export default function EditarServicioPage() {
           description: data.description,
           price: data.price.toString(),
           imageUrl: data.imageUrl ?? "",
+          type: data.type ,
         });
         setLoading(false);
       });
@@ -53,6 +60,7 @@ export default function EditarServicioPage() {
         description: form.description,
         price: parseFloat(form.price),
         imageUrl: form.imageUrl || null,
+        type: form.type,
       }),
     });
 
@@ -70,7 +78,8 @@ export default function EditarServicioPage() {
     <div className="flex min-h-screen items-center justify-center p-4">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md space-y-6 p-8 border rounded-xl shadow"
+        className="w-full max-w-md space-y-6 p-8 rounded-xl backdrop-blur-md bg-white/30 shadow-lg border border-white/20"
+
       >
         <h2 className="text-2xl font-bold text-center">Editar Servicio</h2>
 
@@ -96,13 +105,24 @@ export default function EditarServicioPage() {
           onChange={handleChange}
           required
         />
-        <Input
+        
+        <Select value={form.type || undefined} onValueChange={(value) => setForm({ ...form, type: value })}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Selecciona un tipo de servicio" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="Limpieza">Limpieza</SelectItem>
+          <SelectItem value="Electricidad">Electricidad</SelectItem>
+          <SelectItem value="Fontanería">Fontanería</SelectItem>
+          <SelectItem value="Otros">Otros</SelectItem>
+        </SelectContent>
+      </Select>
+      <Input
           name="imageUrl"
           placeholder="URL de imagen (opcional)"
           value={form.imageUrl}
           onChange={handleChange}
         />
-
         <Button type="submit" className="w-full">
           Guardar Cambios
         </Button>
