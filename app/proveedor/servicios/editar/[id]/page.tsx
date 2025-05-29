@@ -108,22 +108,19 @@ export default function EditarServicioPage() {
           required
           className="bg-white text-black placeholder-gray-500 border border-gray-300"/>
         
-        <Select value={form.type || undefined} onValueChange={(value) => setForm({ ...form, type: value })}>
-        <SelectTrigger className="w-full bg-white text-black placeholder-gray-500 border border-gray-300"
-        >
-          <SelectValue className="bg-white text-black placeholder-gray-500 border border-gray-300 "
-          placeholder="Selecciona un tipo de servicio" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="Limpieza">Limpieza</SelectItem>
+       <Select onValueChange={(value) => setForm({ ...form, type: value })}>
+          <SelectTrigger className="w-full bg-white text-black placeholder-gray-500 border border-gray-300">
+            <SelectValue placeholder="Selecciona un tipo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Limpieza">Limpieza</SelectItem>
           <SelectItem value="Electricidad">Electricidad</SelectItem>
           <SelectItem value="Fontanería">Fontanería</SelectItem>
           <SelectItem value="Comida">Comida</SelectItem>
           <SelectItem value="Reformas">Reformas</SelectItem>
           <SelectItem value="Otros">Otros</SelectItem>
-          
-        </SelectContent>
-      </Select>
+          </SelectContent>
+        </Select>
       {/* <Input
           name="imageUrl"
           placeholder="URL de imagen (opcional)"

@@ -68,18 +68,19 @@ export default function CrearServicioPage() {
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6 p-8 border rounded-xl shadow">
         <h2 className="text-2xl font-bold text-center">Crear Nuevo Servicio</h2>
 
-        <Input name="title" placeholder="Título" value={form.title} onChange={handleChange} required />
-        <Textarea name="description" placeholder="Descripción" value={form.description} onChange={handleChange} required />
-        <Input name="price" type="number" placeholder="Precio" value={form.price} onChange={handleChange} required />
+        <Input name="title" placeholder="Título" value={form.title} onChange={handleChange} required className="bg-white text-black placeholder-gray-500 border border-gray-300" />
+        <Textarea name="description" placeholder="Descripción" value={form.description} onChange={handleChange} required className="bg-white text-black placeholder-gray-500 border border-gray-300" />
+        <Input name="price" type="number" placeholder="Precio" value={form.price} onChange={handleChange} required  className="bg-white text-black placeholder-gray-500 border border-gray-300"/>
         <Input
         name="imageUrl"
         placeholder="URL de imagen (opcional)"
         value={form.imageUrl}
         onChange={handleChange}
+        className="bg-white text-black placeholder-gray-500 border border-gray-300"
         />
         <label className="block text-sm font-medium">Tipo de servicio</label>
         <Select onValueChange={(value) => setForm({ ...form, type: value })}>
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full bg-white text-black placeholder-gray-500 border border-gray-300">
             <SelectValue placeholder="Selecciona un tipo" />
           </SelectTrigger>
           <SelectContent>

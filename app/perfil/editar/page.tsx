@@ -28,7 +28,7 @@ export default function EditarPerfilPage() {
 
     if (res.ok) {
       toast.success("Nombre actualizado");
-      router.push("/perfil");
+      router.push("/");
     } else {
       toast.error("Error al actualizar");
     }
@@ -44,7 +44,7 @@ export default function EditarPerfilPage() {
           onChange={(e) => setName(e.target.value)}
           required
         />
-        <Button type="submit" className="w-full">Guardar cambios</Button>
+        <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold">Guardar cambios</Button>
       </form>
     </div>
   );

@@ -14,6 +14,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Logo from "@/components/Logo";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function Navbar() {
   const router = useRouter();
@@ -40,6 +41,13 @@ export default function Navbar() {
     window.location.href = "/";;
     
   };
+  const refreshUser = async () => {
+  const res = await fetch("/api/me", { credentials: "include" });
+  if (res.ok) {
+    const data = await res.json();
+    setUser(data.user || data);
+  }
+};
 
   if (!user) return null;
 
@@ -53,6 +61,10 @@ export default function Navbar() {
       <Logo />
 
       <div className="flex items-center gap-4">
+        
+      <Button variant="outline" onClick={() => router.push("/perfil/editar")}>
+        Editar Perfil
+        </Button>
         {user.role === "CLIENTE" && (
           <>
             <Button variant="outline" onClick={() => router.push("/cliente/buscar")}>
