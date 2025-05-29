@@ -87,9 +87,12 @@ export default function BuscarServiciosPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="todos">Todos</SelectItem>
-            <SelectItem value="Fontanería">Fontanería</SelectItem>
-            <SelectItem value="Electricidad">Electricidad</SelectItem>
-            <SelectItem value="Peluquería">Peluquería</SelectItem>
+            <SelectItem value="Limpieza">Limpieza</SelectItem>
+          <SelectItem value="Electricidad">Electricidad</SelectItem>
+          <SelectItem value="Fontanería">Fontanería</SelectItem>
+          <SelectItem value="Comida">Comida</SelectItem>
+          <SelectItem value="Reformas">Reformas</SelectItem>
+          <SelectItem value="Otros">Otros</SelectItem>
             <SelectItem value="General">Otros</SelectItem>
           </SelectContent>
         </Select>

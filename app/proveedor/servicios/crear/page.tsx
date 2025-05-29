@@ -84,10 +84,11 @@ export default function CrearServicioPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="Limpieza">Limpieza</SelectItem>
-            <SelectItem value="Electricidad">Electricidad</SelectItem>
-            <SelectItem value="Fontanería">Fontanería</SelectItem>
-            <SelectItem value="Reformas">Reformas</SelectItem>
-            <SelectItem value="Otros">Otros</SelectItem>
+          <SelectItem value="Electricidad">Electricidad</SelectItem>
+          <SelectItem value="Fontanería">Fontanería</SelectItem>
+          <SelectItem value="Comida">Comida</SelectItem>
+          <SelectItem value="Reformas">Reformas</SelectItem>
+          <SelectItem value="Otros">Otros</SelectItem>
           </SelectContent>
         </Select>
 

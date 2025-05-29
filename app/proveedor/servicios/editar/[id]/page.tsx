@@ -89,6 +89,7 @@ export default function EditarServicioPage() {
           value={form.title}
           onChange={handleChange}
           required
+          className="bg-white text-black placeholder-gray-500 border border-gray-300"
         />
         <Textarea
           name="description"
@@ -96,6 +97,7 @@ export default function EditarServicioPage() {
           value={form.description}
           onChange={handleChange}
           required
+          className="bg-white text-black placeholder-gray-500 border border-gray-300"
         />
         <Input
           name="price"
@@ -104,25 +106,30 @@ export default function EditarServicioPage() {
           value={form.price}
           onChange={handleChange}
           required
-        />
+          className="bg-white text-black placeholder-gray-500 border border-gray-300"/>
         
         <Select value={form.type || undefined} onValueChange={(value) => setForm({ ...form, type: value })}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Selecciona un tipo de servicio" />
+        <SelectTrigger className="w-full bg-white text-black placeholder-gray-500 border border-gray-300"
+        >
+          <SelectValue className="bg-white text-black placeholder-gray-500 border border-gray-300 "
+          placeholder="Selecciona un tipo de servicio" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="Limpieza">Limpieza</SelectItem>
           <SelectItem value="Electricidad">Electricidad</SelectItem>
           <SelectItem value="Fontanería">Fontanería</SelectItem>
+          <SelectItem value="Comida">Comida</SelectItem>
+          <SelectItem value="Reformas">Reformas</SelectItem>
           <SelectItem value="Otros">Otros</SelectItem>
+          
         </SelectContent>
       </Select>
-      <Input
+      {/* <Input
           name="imageUrl"
           placeholder="URL de imagen (opcional)"
           value={form.imageUrl}
           onChange={handleChange}
-        />
+        /> */}
         <Button type="submit" className="w-full">
           Guardar Cambios
         </Button>
