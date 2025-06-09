@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Datos incompletos" }, { status: 400 });
     }
 
-    //Validar que no haya otra reserva confirmada a esa hora
+    // Validar que no haya otra reserva confirmada a esa hora
     const yaReservada = await prisma.reservation.findFirst({
       where: {
         serviceId,
@@ -35,11 +35,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Obtener ubicación desde el servicio
+    const servicio = await prisma.service.findUnique({
+      where: { id: serviceId },
+    });
+
+    if (!servicio) {
+      return NextResponse.json({ error: "Servicio no encontrado" }, { status: 404 });
+    }
+
     const reserva = await prisma.reservation.create({
       data: {
         serviceId,
         reservationDate: new Date(reservationDate),
         clientId: usuario.id,
+        location: servicio.location, // ✅ Añadir ubicación automáticamente
       },
     });
 
@@ -48,7 +58,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Token inválido o error interno" }, { status: 401 });
   }
 }
-
 
 // Obtener reservas del cliente o proveedor
 export async function GET(req: NextRequest) {
