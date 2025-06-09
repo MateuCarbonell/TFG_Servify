@@ -126,6 +126,7 @@ export default function BuscarServiciosPage() {
         <FechaHoraPicker
           value={fechas[servicio.id] || null}
           onChange={(date) => setFechas({ ...fechas, [servicio.id]: date })}
+          
         />
 
         <Button

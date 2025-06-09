@@ -1,5 +1,9 @@
 "use client";
 
+import { MiddlewareReturn } from "@floating-ui/core";
+import { MiddlewareState } from "@floating-ui/dom";
+import { MiddlewareReturn } from "@floating-ui/core";
+import { MiddlewareState } from "@floating-ui/dom";
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -22,8 +26,26 @@ export default function FechaHoraPicker({ value, onChange }: Props) {
       className="w-full px-3 py-2 border rounded-md shadow-sm text-sm"
       popperClassName="z-50 datepicker-popper"
       popperPlacement="top-start"
+      popperModifiers={[
+        {
+          name: "preventOverflow",
+          options: {
+            altAxis: false,
+          },
+          fn: function (state: MiddlewareState): MiddlewareReturn | Promise<MiddlewareReturn> {
+            throw new Error("Function not implemented.");
+          }
+        },
+        {
+          name: "flip",
+          options: {
+            fallbackPlacements: [], // ❌ No permitas que se voltee
+          },
+          fn: function (state: MiddlewareState): MiddlewareReturn | Promise<MiddlewareReturn> {
+            throw new Error("Function not implemented.");
+          }
+        },
+      ]}
     />
-
-    
   );
 }
