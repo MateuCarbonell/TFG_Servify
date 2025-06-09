@@ -13,6 +13,7 @@ interface Servicio {
   price: number;
   type: string;
   imageUrl?: string;
+  location: string;
 }
 
 export default function ServiciosProveedorPage() {
@@ -61,35 +62,34 @@ export default function ServiciosProveedorPage() {
             <Card
               key={s.id}
               className="relative overflow-visible bg-white/30 backdrop-blur-md text-black shadow-lg rounded-xl border border-white/50 p-5 hover:shadow-xl transition"
-
             >
               <CardTitle className="text-xl font-bold mb-3">{s.title}</CardTitle>
 
-              <p className="text-sm text-black/80 mb-2 line-clamp-3">
-                {s.description}
-              </p>
+              <p className="text-sm text-black/80 mb-3 line-clamp-3">{s.description}</p>
 
-              <div className="flex items-center justify-between mb-2">
+              <div className="space-y-1 mb-3">
+              <div className="flex gap-2 items-center">
                 <span className="font-semibold text-base">💶 {s.price} €</span>
+                <span className="text-xs px-3 py-1 bg-indigo-600 text-white rounded-full shadow">{s.type}</span>
+              </div>
+              <div>
                 <span className="text-xs px-3 py-1 bg-indigo-600 text-white rounded-full shadow">
-                  {s.type}
+                  Ubicación: {s.location}
                 </span>
               </div>
+            </div>
 
-              {/* === Botones con estilo consistente al ejemplo de "Reservar" === */}
-              <div className="space-y-2 mt-4">
+
+              <div className="space-y-2">
                 <Link href={`/proveedor/servicios/editar/${s.id}`}>
-                  <Button
-                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold"
-                  >
+                  <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold">
                     Editar
                   </Button>
                 </Link>
-
                 <Button
                   variant="outline"
                   onClick={() => eliminar(s.id)}
-                  className=" mt-2 w-full text-red-600 border-red-500 hover:bg-red-100 font-semibold"
+                  className="w-full text-red-600 border-red-500 hover:bg-red-100 font-semibold mt-2"
                 >
                   Eliminar
                 </Button>

@@ -48,6 +48,7 @@ model Reservation {
   client          User              @relation("UserReservations", fields: [clientId], references: [id])
   clientId        String
   reservationDate DateTime
+  location        String
   status          ReservationStatus @default(PENDING)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt

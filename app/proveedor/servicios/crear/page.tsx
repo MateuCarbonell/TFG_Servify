@@ -18,6 +18,7 @@ export default function CrearServicioPage() {
   price: "",
   imageUrl: "",
   type: "", 
+  location: "", 
 });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -46,16 +47,14 @@ export default function CrearServicioPage() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      title: form.title,
-      description: form.description,
-      price: parseFloat(form.price),
-      imageUrl: form.imageUrl || null, // opcional
-      type: form.type
+      ...form,
+        price: parseFloat(form.price)
     }),
   });
 
   if (res.ok) {
     toast.success("Servicio creado correctamente");
+    console.log("Servicio creado:", form);
     router.push("/proveedor/servicios");
   } else {
     toast.error("Error al crear el servicio");
@@ -92,6 +91,8 @@ export default function CrearServicioPage() {
           <SelectItem value="Otros">Otros</SelectItem>
           </SelectContent>
         </Select>
+        <Input name="location" placeholder="Ubicación" value={form.location} onChange={handleChange} required />
+
 
         <Button type="submit" className="w-full">Crear Servicio</Button>
       </form>

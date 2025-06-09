@@ -21,7 +21,7 @@ export async function GET(_: NextRequest, context: any) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function PATCH(request: NextRequest, context: any) {
   const id = context.params.id;
-  const { title, description, price, type } = await request.json();
+  const { title, description, price, type, location } = await request.json();
 
   const servicioActualizado = await prisma.service.update({
     where: { id },
@@ -30,6 +30,7 @@ export async function PATCH(request: NextRequest, context: any) {
       description,
       price: parseFloat(price),
       type,
+      location
     },
   });
 

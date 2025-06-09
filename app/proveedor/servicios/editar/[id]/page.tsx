@@ -16,7 +16,7 @@ import {
 export default function EditarServicioPage() {
   const router = useRouter();
   const params = useParams();
-  const [form, setForm] = useState({ title: "", description: "", price: "", imageUrl: "", type: "" });
+  const [form, setForm] = useState({ title: "", description: "", price: "", imageUrl: "", type: "", location: "" });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,6 +29,7 @@ export default function EditarServicioPage() {
           price: data.price.toString(),
           imageUrl: data.imageUrl ?? "",
           type: data.type ,
+          location: data.location || "", // Asegúrate de incluir location si es necesario
         });
         setLoading(false);
       });
@@ -61,6 +62,7 @@ export default function EditarServicioPage() {
         price: parseFloat(form.price),
         imageUrl: form.imageUrl || null,
         type: form.type,
+        location: form.location || "", 
       }),
     });
 
@@ -108,6 +110,15 @@ export default function EditarServicioPage() {
           required
           className="bg-white text-black placeholder-gray-500 border border-gray-300"/>
         
+        <Input
+          name="location"
+          placeholder="Ubicación"
+          value={form.location}
+          onChange={handleChange}
+          required
+          className="bg-white text-black placeholder-gray-500 border border-gray-300"
+        />
+
        <Select onValueChange={(value) => setForm({ ...form, type: value })}>
           <SelectTrigger className="w-full bg-white text-black placeholder-gray-500 border border-gray-300">
             <SelectValue placeholder="Selecciona un tipo" />

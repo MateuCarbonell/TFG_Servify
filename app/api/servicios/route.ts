@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No autorizado" }, { status: 403 });
     }
 
-    const { title, description, price, imageUrl, type } = await req.json();
+  const { title, description, price, imageUrl, type, location } = await req.json(); // ← Asegúrate de incluir location aquí
 
     // Validaciones back
     if (!title || title.length < 3) {
@@ -39,13 +39,14 @@ export async function POST(req: NextRequest) {
         price,
         imageUrl: imageUrl || null,
         providerId: usuario.id,
-        location: "",
+        location,
         type,
         availability: {},
       },
     });
 
     return NextResponse.json(servicio);
+    
   } catch (error) {
     console.error("❌ Error al crear servicio:", error);
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
