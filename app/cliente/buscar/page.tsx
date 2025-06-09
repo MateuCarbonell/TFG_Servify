@@ -93,7 +93,6 @@ export default function BuscarServiciosPage() {
           <SelectItem value="Comida">Comida</SelectItem>
           <SelectItem value="Reformas">Reformas</SelectItem>
           <SelectItem value="Otros">Otros</SelectItem>
-            <SelectItem value="General">Otros</SelectItem>
           </SelectContent>
         </Select>
       </div>
