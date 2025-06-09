@@ -1,4 +1,3 @@
-// components/FechaHoraPicker.tsx
 "use client";
 
 import React from "react";
@@ -21,6 +20,10 @@ export default function FechaHoraPicker({ value, onChange }: Props) {
       minDate={new Date()}
       placeholderText="Selecciona fecha y hora"
       className="w-full px-3 py-2 border rounded-md shadow-sm text-sm"
+      popperClassName="z-50 datepicker-popper"
+      popperPlacement="top-start"
     />
+
+    
   );
 }

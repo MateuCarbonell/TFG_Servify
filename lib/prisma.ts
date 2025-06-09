@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
-// 👇 Declaramos el tipo para evitar el error de TypeScript
 declare global {
   // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined;

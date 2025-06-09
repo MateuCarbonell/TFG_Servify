@@ -60,7 +60,8 @@ export default function ServiciosProveedorPage() {
           {servicios.map((s) => (
             <Card
               key={s.id}
-              className="bg-white/30 backdrop-blur-md text-black shadow-lg rounded-xl border border-white/50 p-5 hover:shadow-xl transition"
+              className="relative overflow-visible bg-white/30 backdrop-blur-md text-black shadow-lg rounded-xl border border-white/50 p-5 hover:shadow-xl transition"
+
             >
               <CardTitle className="text-xl font-bold mb-3">{s.title}</CardTitle>
 
