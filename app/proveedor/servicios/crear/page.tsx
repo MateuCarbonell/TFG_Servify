@@ -91,7 +91,7 @@ export default function CrearServicioPage() {
           <SelectItem value="Otros">Otros</SelectItem>
           </SelectContent>
         </Select>
-        <Input name="location" placeholder="Ubicación" value={form.location} onChange={handleChange} required />
+        <Input name="location" placeholder="Ubicación" value={form.location} onChange={handleChange} className="w-full bg-white text-black placeholder-gray-500 border border-gray-300" required />
 
 
         <Button type="submit" className="w-full">Crear Servicio</Button>

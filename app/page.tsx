@@ -47,7 +47,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
             className="text-4xl font-bold mb-4"
           >
-            Bienvenido a ServiFy
+            Bienvenido a Servify
           </motion.h1>
 
           <p className="text-md mb-6">
